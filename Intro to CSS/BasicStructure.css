@@ -1,0 +1,75 @@
+/* comment */
+/* multiline 
+comment */
+
+/*CSS = cascading style sheets */
+
+
+/* declaration block */
+    /* selector: the part of a rule that targets which html elements to style  
+    selector types:
+        - element selector: h1, p, div : targets by tag name 
+            p {
+                color: red;
+            }
+
+                    html is...
+                    <p>This is a sentence.</p>
+
+        - class selector: .box : targets elements with 'clas="box"'
+            .box {
+                border: 1px sollid black;
+            }
+
+                    html...
+                    <div class="box">This is a box.</div>
+
+        - id selector: #main : targets elements with 'id="main"'
+            #header {
+                background-color: gray;
+            }
+
+                    html...
+                    <div id="header">Site Header</div>
+
+        - universal: * : targets all elements
+            * {
+            margin: 0;
+            padding: 0;
+            }
+
+                        html...
+                        <p>Paragraph</p>
+                        <h1>Heading</h1>
+                        <!-- All elements will have zero margin and padding -->
+
+        - group: h1, h2, p : targets multiple types at once 
+            h1, h2, p {
+                font-family: Arial, sans-serif;
+            }
+
+                html...
+                <h1>Title</h1>
+                <h2>Subtitle</h2>
+                <p>Text</p>
+
+        - descendant: div p : targets <p> inside of <div>
+            div p {
+               color: green;
+            }
+
+                        html...
+                        <div>
+                          <p>This paragraph is inside a div.</p>
+                        </div>
+
+        - attribute: 'input[type="text"]' : targets inputs w/ specific attributes
+            input[type="text"] {
+                border: 1px solid blue;
+            }
+
+                    html...
+                    <input type="text" placeholder="Enter text">
+                    <input type="submit" value="Submit">
+
+        */
