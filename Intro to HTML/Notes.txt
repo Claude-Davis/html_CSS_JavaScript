@@ -1,0 +1,4 @@
+Document Object Model (DOM) Tree
+    - The hierarchy and structure of HTML elements, often used for targeting elements in CSS and JavaScript.
+
+
