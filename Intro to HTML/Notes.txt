@@ -2,3 +2,8 @@ Document Object Model (DOM) Tree
     - The hierarchy and structure of HTML elements, often used for targeting elements in CSS and JavaScript.
 
 
+Inline Elements:
+    Exs: <i> , <b> , <q>
+
+Block-Level Elements
+    Exs: <blockquote> , <p> , <ul>
