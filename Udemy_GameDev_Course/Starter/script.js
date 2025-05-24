@@ -53,11 +53,12 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             //y-axis
             if (this.game.keys.includes('ArrowUp')) this.speed = -2;
             else if (this.game.keys.includes('ArrowDown')) this.speed = 2;
+            else this.speed = 0;
             this.y += this.speed;
 
             //x-axis
-            if (this.game.keys.includes('ArrowRight')) this.speed = -2;
-            else if (this.game.keys.includes('ArrowLeft')) this.speed = 2;
+            if (this.game.keys.includes('ArrowRight')) this.speed = 2;
+            else if (this.game.keys.includes('ArrowLeft')) this.speed = -2;
             this.x += this.speed;
         }
         draw(context){
