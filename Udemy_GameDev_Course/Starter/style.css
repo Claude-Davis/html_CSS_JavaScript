@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#canvas1 {
+    border: Spx rgb(0, 0, 0);
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    background: #9500ff; /* https://rgbcolorpicker.com/ */
+    max-width: 100%;
+    max-height: 100%;
+}
