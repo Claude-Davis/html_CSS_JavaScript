@@ -7,7 +7,24 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
 
     class InputHandler {
-        //
+        constructor(game){
+            this.game = game;
+            window.addEventListener('keydown', e => {  
+                if (( (e.key === 'ArrowUp') ||
+                      (e.key === 'ArrowDown')
+                    ) && this.game.keys.indexOf(e.key) === -1) {
+                        this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
+                }
+                console.log(this.game.keys);
+            });
+            window.addEventListener('keyup', e => {
+                //indexOf() method returns the first index at which a given element can be found in an array; returns -1 if theelement is not present
+                if (this.game.keys.indexOf(e.key) > -1) {
+                    this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
+                }
+                console.log(this.game.keys);
+            })
+        }
     }
 
     class Projectile {
@@ -20,14 +37,16 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
     class Player {
         constructor(game){
-           this.gme = game; 
+           this.game = game; 
            this.width = 120;
            this.height = 190;
            this.x = 20;
            this.y = 100;
-           this.speed = 0.5;
+           this.speed = 0;  //adjust this for vertical movement
         }
         update(){
+            if (this.game.keys.includes('ArrowUp')) this.speed = -2;
+            else if (this.game.keys.includes('ArrowDown')) this.speed = 2;
             this.y += this.speed;
         }
         draw(context){
@@ -57,6 +76,9 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.width = width;
             this.height = height;
             this.player = new Player(this);  //creates an instance of Player class
+                //the 'this' arg passed refers to the entire Game class
+            this.input = new InputHandler(this);
+            this.keys = []; //keeps track of keys pressed
         }
         update(){
             this.player.update(); //calls update method of Player obj
