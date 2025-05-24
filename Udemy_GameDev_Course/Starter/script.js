@@ -15,6 +15,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                     ) && this.game.keys.indexOf(e.key) === -1) {
                         this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
                 }
+                if (( (e.key === 'ArrowRight') ||
+                      (e.key === 'ArrowLeft')
+                    ) && this.game.keys.indexOf(e.key) === -1) {
+                        this.game.keys.push(e.key);
+                    }
                 console.log(this.game.keys);
             });
             window.addEventListener('keyup', e => {
@@ -45,9 +50,15 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.speed = 0;  //adjust this for vertical movement
         }
         update(){
+            //y-axis
             if (this.game.keys.includes('ArrowUp')) this.speed = -2;
             else if (this.game.keys.includes('ArrowDown')) this.speed = 2;
             this.y += this.speed;
+
+            //x-axis
+            if (this.game.keys.includes('ArrowRight')) this.speed = -2;
+            else if (this.game.keys.includes('ArrowLeft')) this.speed = 2;
+            this.x += this.speed;
         }
         draw(context){
             context.fillRect(this.x, this.y, this.width, this.height);
