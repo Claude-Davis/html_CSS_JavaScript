@@ -69,6 +69,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     const game = new Game(canvas.width, canvas.height);
     
     function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update();
         game.draw(ctx);
         requestAnimationFrame(animate); //tells the browser we want to perform an animation; requests that browser calls a specified functino to update an animation before next repaint
