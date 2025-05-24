@@ -47,19 +47,21 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.height = 190;
            this.x = 20;
            this.y = 100;
-           this.speed = 0;  //adjust this for vertical movement
+           this.speedY = 0;  
+           this.speedX = 0;
         }
         update(){
             //y-axis
-            if (this.game.keys.includes('ArrowUp')) this.speed = -2;
-            else if (this.game.keys.includes('ArrowDown')) this.speed = 2;
-            else this.speed = 0;
-            this.y += this.speed;
+            if (this.game.keys.includes('ArrowUp')) this.speedY = -2;
+            else if (this.game.keys.includes('ArrowDown')) this.speedY = 2;
+            else this.speedY = 0;  //stops movement if U/D arrows are not pressed
+            this.y += this.speedY;
 
             //x-axis
-            if (this.game.keys.includes('ArrowRight')) this.speed = 2;
-            else if (this.game.keys.includes('ArrowLeft')) this.speed = -2;
-            this.x += this.speed;
+            if (this.game.keys.includes('ArrowRight')) this.speedX = 2;
+            else if (this.game.keys.includes('ArrowLeft')) this.speedX = -2;
+            else this.speedX = 0; //stops movement if R/L arrows are not pressed
+            this.x += this.speedX;
         }
         draw(context){
             context.fillRect(this.x, this.y, this.width, this.height);
