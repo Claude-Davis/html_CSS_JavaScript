@@ -93,7 +93,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         shootTop(){
             if (this.game.ammo > 0){
                 this.projectiles.push(new Projectile(this.game, this.x, this.y));
-                this.game.ammo -= 1;
+                this.game.ammo -= 1;  //or this.game.amm0--;
                 console.log(this.projectiles);
             }
         }
