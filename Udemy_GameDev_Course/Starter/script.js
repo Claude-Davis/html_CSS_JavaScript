@@ -91,8 +91,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             });
         }
         shootTop(){
-            this.projectiles.push(new Projectile(this.game, this.x, this.y));
-            console.log(this.projectiles);
+            if (this.game.ammo > 0){
+                this.projectiles.push(new Projectile(this.game, this.x, this.y));
+                this.game.ammo -= 1;
+                console.log(this.projectiles);
+            }
         }
     }
 
@@ -121,6 +124,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 //the 'this' arg passed refers to the entire Game class
             this.input = new InputHandler(this);
             this.keys = []; //keeps track of keys pressed
+            this.ammo = 20;
         }
         update(){
             this.player.update(); //calls update method of Player obj
