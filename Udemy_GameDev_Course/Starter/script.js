@@ -11,15 +11,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.game = game;
             window.addEventListener('keydown', e => {  
                 if (( (e.key === 'ArrowUp') ||
-                      (e.key === 'ArrowDown')
-                    ) && this.game.keys.indexOf(e.key) === -1) {
-                        this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
-                }
-                if (( (e.key === 'ArrowRight') ||
+                      (e.key === 'ArrowDown') ||
+                      (e.key === 'ArrowRight') ||
                       (e.key === 'ArrowLeft')
-                    ) && this.game.keys.indexOf(e.key) === -1) {
-                        this.game.keys.push(e.key);
-                    }
+                    ) && this.game.keys.indexOf(e.key) === -1) this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
+                else if (e.key === ' ') this.game.player.shootTop(); 
                 console.log(this.game.keys);
             });
             window.addEventListener('keyup', e => {
@@ -33,7 +29,23 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     }
 
     class Projectile {
-        //
+        constructor(game, x, y) {
+            this.game = game;
+            this.x = x;
+            this.y = y;
+            this.width = 10;
+            this.height = 5;
+            this.speed = 5;
+            this.markedforDeletion = false;
+        }
+        update() {
+            this.x += this.speed;
+            if (this.x > this.game.width*0.8) this.markedforDeletion = true;
+        }
+        draw(context) {
+            context.fillStyle = '#d9e81a';
+            context.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 
     class Particle {
@@ -49,6 +61,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.y = 100;
            this.speedY = 0;  
            this.speedX = 0;
+           this.projectiles = [];
         }
         update(){
             //y-axis
@@ -62,9 +75,24 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             else if (this.game.keys.includes('ArrowLeft')) this.speedX = -2;
             else this.speedX = 0; //stops movement if R/L arrows are not pressed
             this.x += this.speedX;
+
+            //projectiles
+            this.projectiles.forEach(projectile => {
+                projectile.update();
+            });
+                    //javascript's filter method
+            this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion);
         }
         draw(context){
+            context.fillStyle = '#1babd9';
             context.fillRect(this.x, this.y, this.width, this.height);
+            this.projectiles.forEach(projectile => {
+                projectile.draw(context);
+            });
+        }
+        shootTop(){
+            this.projectiles.push(new Projectile(this.game, this.x, this.y));
+            console.log(this.projectiles);
         }
     }
 
