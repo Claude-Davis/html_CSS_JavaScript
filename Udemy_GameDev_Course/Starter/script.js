@@ -125,9 +125,18 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.input = new InputHandler(this);
             this.keys = []; //keeps track of keys pressed
             this.ammo = 20;
+            this.maxAmmo = 50;
+            this.ammoTimer = 0;
+            this.ammoInterval = 2000; //in miliseconds, so = 1s
         }
-        update(){
+        update(deltaTime){
             this.player.update(); //calls update method of Player obj
+            if (this.ammoTimer > this.ammoInterval){
+                if (this.ammo < this.maxAmmo) this.ammo+=5;
+                this.ammoTimer = 0; //reset ammo timer
+            } else {
+                this.ammoTimer += deltaTime;
+            }
         }
         draw(context){
             this.player.draw(context); //calls draw method of Player obj
@@ -135,14 +144,18 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     }
 
     const game = new Game(canvas.width, canvas.height);
+    let lastTime = 0; //will be used to store the timestamp of the previous animation loop
     
-    function animate() {
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update();
+        game.update(deltaTime);
         game.draw(ctx);
         requestAnimationFrame(animate); //tells the browser we want to perform an animation; requests that browser calls a specified functino to update an animation before next repaint
             //passing the animation frame the name of its parent function creates an endless loop
+            //requestAnimationFrame auto. passes the timeStamp as an arg. to the function it calls (ie 'animate')
     }
 
-    animate();
+    animate(0);
 });
