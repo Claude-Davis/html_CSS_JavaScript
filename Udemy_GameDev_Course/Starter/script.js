@@ -113,6 +113,22 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
     class UI {
         //Handles score, timer and any other info to be displayed for the user
+        constructor(game){
+            this.game = game;
+            this.fontSize = 25;
+            this.fontFamily = 'Helvetica';//Lucida Console
+            this.color = '#0009fc';
+        }
+        draw(context){
+            //ammo
+            context.fillStyle = this.color;
+            for (let x=0; x<this.game.ammo; x++){
+                context.fillRect(20+5*x, 50, 3, 20);
+            }
+        }
+        update(){
+            //
+        }
     }
 
     class Game {
@@ -123,6 +139,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.player = new Player(this);  //creates an instance of Player class
                 //the 'this' arg passed refers to the entire Game class
             this.input = new InputHandler(this);
+            this.ui = new UI(this);
             this.keys = []; //keeps track of keys pressed
             this.ammo = 20;
             this.maxAmmo = 50;
@@ -140,6 +157,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         }
         draw(context){
             this.player.draw(context); //calls draw method of Player obj
+            this.ui.draw(context);
         }
     }
 
