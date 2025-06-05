@@ -81,7 +81,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 projectile.update();
             });
                     //javascript's filter method
-            this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion);
+            this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
         }
         draw(context){
             context.fillStyle = '#1babd9';
@@ -101,7 +101,31 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
     class Enemy {
         //handles multiple enemy types
+        constructor(game) {
+            this.game = game; 
+            this.width = 70;
+            this.height = 70;
+            this.x = this.game.width;  
+            this.speedX = Math.random()*-1.5 - 0.5;;
+            this.markedforDeletion = false;
+        }
+        update(){
+            this.x = this.speedX;
+            if (this.x + this.width < 0) this.markedforDeletion=true; //delete if enemy is out of bounds
+        }
+        draw(context){
+            context.fillStyle = 'red';
+            context.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
+            class type1Enemy extends Enemy{
+                constructor(game){
+                    super(game); //allows for inheritance of constructor instead of overriding it
+                    this.width = 228;
+                    this.height = 169;
+                    this.y = Math.random() * (this.game.height*0.0-this.height);
+                }
+            }
 
     class Layer {
         //handles individual background layers; scrolling mulilayered background
@@ -143,10 +167,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.input = new InputHandler(this);
             this.ui = new UI(this);
             this.keys = []; //keeps track of keys pressed
+            this.enemies = []; //array for all enemy objects
+            this.enemyTimer = 0;
+            this.enemyInterval = 5000; //every 5 s, a new enemy spawns
             this.ammo = 20;
             this.maxAmmo = 50;
             this.ammoTimer = 0;
-            this.ammoInterval = 3500; //in miliseconds, so = 1s
+            this.ammoInterval = 3500; //in miliseconds, so = 1s ; every 3.5 seconds, ammo is refilled
+            this.gameOver = false;
         }
         update(deltaTime){
             this.player.update(); //calls update method of Player obj
@@ -156,10 +184,23 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             } else {
                 this.ammoTimer += deltaTime;
             }
+            if ((this.enemyTimer > this.enemyInterval) && (!this.gameOver)){
+                this.enemyTimer = 0;
+            } else {
+                this.enemyTimer += deltaTime;
+            }
+
+            this.enemies.forEach(enemy => {
+                enemy.update();
+            });
+            this.enemies = this.enemies.filter(enemy => !markedforDeletion)//filters out all projectile objects with markedforDeletion set to true
         }
         draw(context){
             this.player.draw(context); //calls draw method of Player obj
             this.ui.draw(context);
+        }
+        addEnemy(){
+            this.enemies.push(new type1Enemy(this)); //new object of type1Enemy is made and added to "enemies" array
         }
     }
 
