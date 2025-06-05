@@ -102,15 +102,13 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     class Enemy {
         //handles multiple enemy types
         constructor(game) {
-            this.game = game; 
-            this.width = 70;
-            this.height = 70;
+            this.game = game;
             this.x = this.game.width;  
             this.speedX = Math.random()*-1.5 - 0.5;;
             this.markedforDeletion = false;
         }
         update(){
-            this.x = this.speedX;
+            this.x += this.speedX;
             if (this.x + this.width < 0) this.markedforDeletion=true; //delete if enemy is out of bounds
         }
         draw(context){
@@ -123,7 +121,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                     super(game); //allows for inheritance of constructor instead of overriding it
                     this.width = 228;
                     this.height = 169;
-                    this.y = Math.random() * (this.game.height*0.0-this.height);
+                    this.y = Math.random() * (this.game.height*0.9-this.height);
                 }
             }
 
@@ -184,16 +182,18 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             } else {
                 this.ammoTimer += deltaTime;
             }
-            if ((this.enemyTimer > this.enemyInterval) && (!this.gameOver)){
-                this.enemyTimer = 0;
-            } else {
-                this.enemyTimer += deltaTime;
-            }
 
             this.enemies.forEach(enemy => {
                 enemy.update();
             });
             this.enemies = this.enemies.filter(enemy => !markedforDeletion)//filters out all projectile objects with markedforDeletion set to true
+            if (this.enemyTimer > this.enemyInterval && !this.gameOver){
+                this.addEnemy();
+                this.enemyTimer = 0;
+            } else {
+                this.enemyTimer += deltaTime;
+            }
+            
         }
         draw(context){
             this.player.draw(context); //calls draw method of Player obj
