@@ -117,13 +117,15 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.game = game;
             this.fontSize = 25;
             this.fontFamily = 'Helvetica';//Lucida Console
-            this.color = '#0009fc';
+            this.color = 'yellow';
+            this.color2 = 'white';
         }
         draw(context){
             //ammo
             context.fillStyle = this.color;
             for (let x=0; x<this.game.ammo; x++){
                 context.fillRect(20+5*x, 50, 3, 20);
+                              //(startingLocation + intermittenSpacing, y-coordinate, rect width, rect height)
             }
         }
         update(){
@@ -144,7 +146,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.ammo = 20;
             this.maxAmmo = 50;
             this.ammoTimer = 0;
-            this.ammoInterval = 2000; //in miliseconds, so = 1s
+            this.ammoInterval = 3500; //in miliseconds, so = 1s
         }
         update(deltaTime){
             this.player.update(); //calls update method of Player obj
