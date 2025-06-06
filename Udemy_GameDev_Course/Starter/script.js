@@ -172,6 +172,9 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 //score
                 context.fillText('Score: ' + this.game.score, 20, 40);
 
+                //game timer
+                context.fillText('Time Left: ' + (this.game.timeLimit-this.game.gameTime)/1000, 250, 40)
+
                 //game over messages
                 if (this.game.gameOver){
                     context.textAlign = 'center';
@@ -182,12 +185,12 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                         message2 = 'Well Done';
                     } else {
                         message1 = 'You Lost!';
-                        message2 = 'Tray Again';
+                        message2 = 'Try Again';
                     }
                     context.font  = '50px ' + this.fontFamily;
-                    context.fillText = (message1, this.game.width*0.5, this.game.height*0.5);
+                    context.fillText(message1, this.game.width*0.5, this.game.height*0.5);
                     context.font  = '25px ' + this.fontFamily;
-                    context.fillText = (message2, this.game.width*0.5, this.game.height*0.5+40);
+                    context.fillText(message2, this.game.width*0.5, this.game.height*0.5+40);
                 }
             context.restore();
         }
@@ -212,9 +215,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.ammoInterval = 3500; //in miliseconds, so = 1s ; every 3.5 seconds, ammo is refilled
             this.score = 0;
             this.winningScore = 10;
+            this.gameTime = 0;
+            this.timeLimit = 60000;
             this.gameOver = false;
         }
         update(deltaTime){
+                if (!this.gameOver) this.gameTime += deltaTime;
+                if (this.gameTime > this.timeLimit) this.gameOver = true;
+
             this.player.update(); //calls update method of Player obj
             if (this.ammoTimer > this.ammoInterval){
                 if (this.ammo < this.maxAmmo) this.ammo+=5;
