@@ -84,7 +84,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
         }
         draw(context){
-            context.fillStyle = '#1babd9';
+            context.fillStyle = '#0000ff';
             context.fillRect(this.x, this.y, this.width, this.height);
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
