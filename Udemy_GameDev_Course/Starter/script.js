@@ -105,11 +105,13 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.game = game;
             this.x = this.game.width;  
             this.speedX = Math.random()*-1.5 - 0.5;
+            this.lives = 7;
             this.markedforDeletion = false;
         }
         update(){
             this.x += this.speedX;
             if (this.x + this.width < 0) this.markedforDeletion=true; //delete if enemy is out of bounds
+            if (this.lives == 0) this.markedforDeletion = true;
         }
         draw(context){
             context.fillStyle = 'red';
@@ -164,7 +166,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.keys = []; //keeps track of keys pressed
             this.enemies = []; //array for all enemy objects
             this.enemyTimer = 0;
-            this.enemyInterval = 5000; //every 5 s, a new enemy spawns
+            this.enemyInterval = 1500; //every 5 s, a new enemy spawns
             this.ammo = 20;
             this.maxAmmo = 50;
             this.ammoTimer = 0;
@@ -182,6 +184,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
             this.enemies.forEach(enemy => {
                 enemy.update();
+                if (this.checkCollision(this.player, enemy)){
+                    enemy.markedforDeletion = true;
+                }
+                this.player.projectiles.forEach(projectile => {
+                    if (this.checkCollision(projectile, enemy)) {
+                        enemy.lives--;
+                    }
+                })
             });
             this.enemies = this.enemies.filter(enemy => !enemy.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
             if (this.enemyTimer > this.enemyInterval && !this.gameOver){
@@ -201,6 +211,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         }
         addEnemy(){
             this.enemies.push(new type1Enemy(this)); //new object of type1Enemy is made and added to "enemies" array
+        }
+        checkCollision(rect1, rect2){
+            return (
+                    rect1.x < rect2.x + rect2.width &&
+                    rect1.x + rect1.width > rect2.x &&
+                    rect1.y < rect2.y + rect2.height &&
+                    rect1.y + rect1.height > rect2.y
+            )
         }
     }
 
