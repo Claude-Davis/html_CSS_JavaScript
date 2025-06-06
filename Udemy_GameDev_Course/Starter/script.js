@@ -111,7 +111,6 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         update(){
             this.x += this.speedX;
             if (this.x + this.width < 0) this.markedforDeletion=true; //delete if enemy is out of bounds
-            if (this.lives == 0) this.markedforDeletion = true;
         }
         draw(context){
             context.fillStyle = 'red';
@@ -190,6 +189,9 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 this.player.projectiles.forEach(projectile => {
                     if (this.checkCollision(projectile, enemy)) {
                         enemy.lives--;
+                        projectile.markedforDeletion = true;
+                        if (enemy.lives <= 0) enemy.markedforDeletion = true;
+                        this.score += enemy.score;
                     }
                 })
             });
