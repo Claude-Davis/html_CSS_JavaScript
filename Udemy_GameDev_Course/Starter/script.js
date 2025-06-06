@@ -156,15 +156,22 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.color2 = 'white';
         }
         draw(context){
-            context.font = this.fontSize + 'px ' + this.fontFamily;
-            //ammo
-            context.fillStyle = this.color;
-            for (let x=0; x<this.game.ammo; x++){
-                context.fillRect(20+5*x, 50, 3, 20);
-                              //(startingLocation + intermittenSpacing, y-coordinate, rect width, rect height)
-            }
-            //score
-            context.fillText('Score: ' + this.game.score, 20, 40);
+            context.save();
+                context.font = this.fontSize + 'px ' + this.fontFamily;
+                context.fillStyle = this.color;
+                context.shadowOffsetX = 2;
+                context.shadowOffsetY = 2;
+                context.shadowColor = '#540a69';
+
+                //ammo
+                for (let x=0; x<this.game.ammo; x++){
+                    context.fillRect(20+5*x, 50, 3, 20);
+                                //(startingLocation + intermittenSpacing, y-coordinate, rect width, rect height)
+                }
+
+                //score
+                context.fillText('Score: ' + this.game.score, 20, 40);
+            context.restore();
         }
     }
 
