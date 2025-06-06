@@ -150,9 +150,6 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                               //(startingLocation + intermittenSpacing, y-coordinate, rect width, rect height)
             }
         }
-        update(){
-            //
-        }
     }
 
     class Game {
