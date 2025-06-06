@@ -104,7 +104,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         constructor(game) {
             this.game = game;
             this.x = this.game.width;  
-            this.speedX = Math.random()*-1.5 - 0.5;;
+            this.speedX = Math.random()*-1.5 - 0.5;
             this.markedforDeletion = false;
         }
         update(){
@@ -116,14 +116,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             context.fillRect(this.x, this.y, this.width, this.height);
         }
     }
-            class type1Enemy extends Enemy{
-                constructor(game){
-                    super(game); //allows for inheritance of constructor instead of overriding it
-                    this.width = 228;
-                    this.height = 169;
-                    this.y = Math.random() * (this.game.height*0.9-this.height);
-                }
-            }
+    class type1Enemy extends Enemy{
+        constructor(game){
+            super(game); //allows for inheritance of constructor instead of overriding it
+                this.width = 228 * 0.2;
+                this.height = 169 * 0.2;
+                this.y = Math.random() * (this.game.height*0.9-this.height);
+        }
+    }
 
     class Layer {
         //handles individual background layers; scrolling mulilayered background
@@ -186,7 +186,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.enemies.forEach(enemy => {
                 enemy.update();
             });
-            this.enemies = this.enemies.filter(enemy => !markedforDeletion)//filters out all projectile objects with markedforDeletion set to true
+            this.enemies = this.enemies.filter(enemy => !enemy.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
             if (this.enemyTimer > this.enemyInterval && !this.gameOver){
                 this.addEnemy();
                 this.enemyTimer = 0;
@@ -198,6 +198,9 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         draw(context){
             this.player.draw(context); //calls draw method of Player obj
             this.ui.draw(context);
+            this.enemies.forEach(enemy => {
+                enemy.draw(context);
+            });
         }
         addEnemy(){
             this.enemies.push(new type1Enemy(this)); //new object of type1Enemy is made and added to "enemies" array
