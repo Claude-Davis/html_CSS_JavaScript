@@ -186,7 +186,6 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 const formattedTime = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
                 context.fillText('Time Left: ' + formattedTime, 250, 40);
 
-                
 
 
                 //game over messages
@@ -195,9 +194,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                     let message1;
                     let message2;
                     if (this.game.score >= this.game.winningScore){
+                        context.fillStyle = 'white';
                         message1 = 'You Win!';
                         message2 = 'Well Done';
                     } else {
+                        context.fillStyle = 'red';
                         message1 = 'You Lost!';
                         message2 = 'Try Again';
                     }
