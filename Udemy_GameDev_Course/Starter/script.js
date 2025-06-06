@@ -173,7 +173,21 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 context.fillText('Score: ' + this.game.score, 20, 40);
 
                 //game timer
-                context.fillText('Time Left: ' + (this.game.timeLimit-this.game.gameTime)/1000, 250, 40)
+                const timeLeft = Math.max(0, this.game.timeLimit - this.game.gameTime); // milliseconds
+
+                if (timeLeft <= 6000) {
+                    context.fillStyle = 'red';
+                } else {
+                    context.fillStyle = 'white';
+                }
+
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                const formattedTime = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+                context.fillText('Time Left: ' + formattedTime, 250, 40);
+
+                
+
 
                 //game over messages
                 if (this.game.gameOver){
@@ -216,12 +230,12 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.score = 0;
             this.winningScore = 10;
             this.gameTime = 0;
-            this.timeLimit = 60000;
+            this.timeLimit = 30000;
             this.gameOver = false;
         }
         update(deltaTime){
-                if (!this.gameOver) this.gameTime += deltaTime;
-                if (this.gameTime > this.timeLimit) this.gameOver = true;
+            if (!this.gameOver) this.gameTime += deltaTime;
+            if (this.gameTime > this.timeLimit) this.gameOver = true;
 
             this.player.update(); //calls update method of Player obj
             if (this.ammoTimer > this.ammoInterval){
