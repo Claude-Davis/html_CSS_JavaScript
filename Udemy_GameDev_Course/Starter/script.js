@@ -62,6 +62,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.speedY = 0;  
            this.speedX = 0;
            this.projectiles = [];
+           this.lives = 50;
         }
         update(){
             //y-axis
@@ -89,6 +90,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
             });
+
+            //display health
+            context.fillStyle = 'blue';
+            context.font = '30px Helvetica';
+            context.fillText(this.lives, this.x+34, this.y-5);
         }
         shootTop(){
             if (this.game.ammo > 0){
@@ -115,6 +121,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         draw(context){
             context.fillStyle = 'red';
             context.fillRect(this.x, this.y, this.width, this.height);
+
+            //display enemies' lives
+            context.fillStyle = 'red';
+            context.font = '20px Helvetica';
+            context.fillText(this.lives, this.x+9, this.y-5);
         }
     }
     class type1Enemy extends Enemy{
@@ -123,6 +134,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                 this.width = 228 * 0.2;
                 this.height = 169 * 0.2;
                 this.y = Math.random() * (this.game.height*0.9-this.height);
+                this.score = 3;
         }
     }
 
@@ -144,12 +156,15 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.color2 = 'white';
         }
         draw(context){
+            context.font = this.fontSize + 'px ' + this.fontFamily;
             //ammo
             context.fillStyle = this.color;
             for (let x=0; x<this.game.ammo; x++){
                 context.fillRect(20+5*x, 50, 3, 20);
                               //(startingLocation + intermittenSpacing, y-coordinate, rect width, rect height)
             }
+            //score
+            context.fillText('Score: ' + this.game.score, 20, 40);
         }
     }
 
@@ -170,6 +185,8 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.maxAmmo = 50;
             this.ammoTimer = 0;
             this.ammoInterval = 3500; //in miliseconds, so = 1s ; every 3.5 seconds, ammo is refilled
+            this.score = 0;
+            this.winningScore = 10;
             this.gameOver = false;
         }
         update(deltaTime){
@@ -184,14 +201,21 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.enemies.forEach(enemy => {
                 enemy.update();
                 if (this.checkCollision(this.player, enemy)){
+                    //player.lives--;
                     enemy.markedforDeletion = true;
+                    /*if (player.lives <= 0) {
+                        this.gameOver = true;
+                    }*/
                 }
                 this.player.projectiles.forEach(projectile => {
                     if (this.checkCollision(projectile, enemy)) {
                         enemy.lives--;
                         projectile.markedforDeletion = true;
-                        if (enemy.lives <= 0) enemy.markedforDeletion = true;
-                        this.score += enemy.score;
+                        if (enemy.lives <= 0) {
+                            enemy.markedforDeletion = true;
+                            this.score += enemy.score;
+                        }
+                        if (this.score > this.winningScore) this.gameOver = true;
                     }
                 })
             });
