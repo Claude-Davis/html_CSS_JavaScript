@@ -5,7 +5,7 @@
 }
 
 #canvas1 {
-    border: Spx rgb(0, 0, 0);
+    border: 3.5px solid rgb(0, 0, 0);
     position: absolute;
     top: 50%;  
     left: 50%; 
