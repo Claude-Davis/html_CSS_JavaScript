@@ -140,7 +140,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
     class Layer {
         //handles individual background layers; scrolling mulilayered background
-        constrcutor(game, image, speedModifier){
+        constructor(game, image, speedModifier){
             this.game = game;
             this.image = image; 
             this.speedModifier = speedModifier;
@@ -167,14 +167,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.image3 = document.getElementById('layer3');
             this.image4 = document.getElementById('layer4');
             this.layer1 = new Layer(this.game, this.image1, 5)
-            this.layer2 = new Layer(this.game, this.image2, 5)
+            this.layer2 = new Layer(this.game, this.image2, 3)
             this.layer3 = new Layer(this.game, this.image3, 5)
-            this.layer4 = new Layer(this.game, this.image4, 5)
+            this.layer4 = new Layer(this.game, this.image4, 2)
             this.layers = [this.layer1, this.layer2, this.layer3, this.layer4];
 
         }
         update() {
-            this.layers.forEach(layer => layer.update);
+            this.layers.forEach(layer => layer.update());
         }
         draw(context) {
             this.layers.forEach(layer => layer.draw(context));
@@ -251,6 +251,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         constructor(width, height){
             this.width = width;
             this.height = height;
+            this.background = new Background(this);
             this.player = new Player(this);  //creates an instance of Player class
                 //the 'this' arg passed refers to the entire Game class
             this.input = new InputHandler(this);
