@@ -167,10 +167,10 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.image2 = document.getElementById('layer2');
             this.image3 = document.getElementById('layer3');
             this.image4 = document.getElementById('layer4');
-            this.layer1 = new Layer(this.game, this.image1, 5)
-            this.layer2 = new Layer(this.game, this.image2, 3)
-            this.layer3 = new Layer(this.game, this.image3, 5)
-            this.layer4 = new Layer(this.game, this.image4, 2)
+            this.layer1 = new Layer(this.game, this.image1, 1)
+            this.layer2 = new Layer(this.game, this.image2, 1)
+            this.layer3 = new Layer(this.game, this.image3, 1)
+            this.layer4 = new Layer(this.game, this.image4, 1)
             this.layers = [this.layer1, this.layer2, this.layer3, this.layer4];
 
         }

@@ -5,15 +5,15 @@
 }
 
 #canvas1 {
-    border: 6px dotted rgb(10, 25, 224);
+    border: 6px solid rgb(10, 25, 224);
     position: absolute;
     top: 50%;  
     left: 50%; 
     transform: translate(-50%, -50%);
     background: #000000; /* https://rgbcolorpicker.com/ */
     max-width: 100%;
-    height: 90%;
-    max-height: 100%;
+    /* height: 90%; */
+    max-height: 100%; 
 }
 
 #layer1, #layer2, #layer3, #layer4 {
