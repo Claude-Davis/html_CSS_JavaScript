@@ -140,10 +140,45 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
 
     class Layer {
         //handles individual background layers; scrolling mulilayered background
+        constrcutor(game, image, speedModifier){
+            this.game = game;
+            this.image = image; 
+            this.speedModifier = speedModifier;
+            this.width = 1768;
+            this.height = 500;
+            this.x = 0;
+            this.y = 0;
+        }
+        update() {
+            if (this.x <= -this.width) this.x = 0;
+            else this.x -= (this.game.speed * this.speedModifier);
+        }
+        draw(context) {
+            context.drawImage(this.image, this.x, this.y);
+        }
     }
 
     class Background {
         //Pulls all layers together to animate the entire game
+        constructor(game) {
+            this.game = game;
+            this.image1 = document.getElementById('layer1');
+            this.image2 = document.getElementById('layer2');
+            this.image3 = document.getElementById('layer3');
+            this.image4 = document.getElementById('layer4');
+            this.layer1 = new Layer(this.game, this.image1, 5)
+            this.layer2 = new Layer(this.game, this.image2, 5)
+            this.layer3 = new Layer(this.game, this.image3, 5)
+            this.layer4 = new Layer(this.game, this.image4, 5)
+            this.layers = [this.layer1, this.layer2, this.layer3, this.layer4];
+
+        }
+        update() {
+            this.layers.forEach(layer => layer.update);
+        }
+        draw(context) {
+            this.layers.forEach(layer => layer.draw(context));
+        }
     }
 
     class UI {
@@ -233,11 +268,13 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.gameTime = 0;
             this.timeLimit = 30000;
             this.gameOver = false;
+            this.speed = 1;
         }
         update(deltaTime){
             if (!this.gameOver) this.gameTime += deltaTime;
             if (this.gameTime > this.timeLimit) this.gameOver = true;
 
+            this.background.update(); //calls update method of Background obj
             this.player.update(); //calls update method of Player obj
             if (this.ammoTimer > this.ammoInterval){
                 if (this.ammo < this.maxAmmo) this.ammo+=5;
@@ -277,6 +314,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             
         }
         draw(context){
+            this.background.draw(context);
             this.player.draw(context); //calls draw method of Player obj
             this.ui.draw(context);
             this.enemies.forEach(enemy => {
