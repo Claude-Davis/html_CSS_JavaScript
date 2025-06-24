@@ -155,6 +155,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         }
         draw(context) {
             context.drawImage(this.image, this.x, this.y);
+            context.drawImage(this.image, this.x+this.width, this.y); //duplicate image added to give the illusion of a continuous view
         }
     }
 
