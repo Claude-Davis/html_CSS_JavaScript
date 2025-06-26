@@ -63,6 +63,10 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.speedX = 0;
            this.projectiles = [];
            this.lives = 50;
+           this.image = document.getElementById('player');
+           this.frameX = 0;  //cycles through spritesheet horizontally
+           this.frameY = 0;   //cycles through spritesheet vertically
+           this.maxFrame =37;
         }
         update(){
             //y-axis
@@ -83,10 +87,17 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             });
                     //javascript's filter method
             this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
+
+            //sprite animation
+            if (this.frameX < this.maxFrame){
+                this.frameX++;
+            } else { this.frameX = 0}
         }
         draw(context){
             context.fillStyle = '#0000ff';
             context.fillRect(this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.width, this.height, this.x, this.y, this.width, this.height); //using 9 arguments provides the most control over the image's display
+                                        // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
             });
