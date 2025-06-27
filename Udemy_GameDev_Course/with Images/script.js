@@ -4,6 +4,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     const ctx = canvas.getContext('2d');  //DRAWING CONTEXT: a built-in obj containing all methods/properties that allow users to draw/animate colors, shapes, and other graphics html canvas.
     canvas.width = 500; //in pixels
     canvas.height = 500; //in pixels
+    
 
 
     class InputHandler {
@@ -11,15 +12,14 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.game = game;
             window.addEventListener('keydown', e => {  
                 if (( (e.key === 'ArrowUp') ||
-                      (e.key === 'ArrowDown') ||
-                      (e.key === 'ArrowRight') ||
-                      (e.key === 'ArrowLeft')
-                    ) && this.game.keys.indexOf(e.key) === -1) this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
-                else if (e.key === ' ') this.game.player.shootTop(); 
-                else if (e.key === 'd'); {
+                      (e.key === 'ArrowDown')
+                ) && this.game.keys.indexOf(e.key) === -1){
+                    this.game.keys.push(e.key);
+                } else if (e.keys === ' '){
+                    this.game.player.shootTop();
+                } else if (e.keys === 'd') {
                     this.game.debug = !this.game.debug;
                 }
-                console.log(this.game.keys);
             });
             window.addEventListener('keyup', e => {
                 //indexOf() method returns the first index at which a given element can be found in an array; returns -1 if theelement is not present
@@ -63,7 +63,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.x = 20;
            this.y = 100;
            this.speedY = 0;  
-           this.speedX = 0;
+           this.maxSpeed = 3;
            this.projectiles = [];
            this.lives = 50;
            this.image = document.getElementById('player');
@@ -71,22 +71,22 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.frameY = 0;   //cycles through spritesheet vertically
            this.maxFrame = 37;
         }
-        update(){
+        update(deltaTime){
             //y-axis
             if (this.game.keys.includes('ArrowUp')) this.speedY = -2;
             else if (this.game.keys.includes('ArrowDown')) this.speedY = 2;
             else this.speedY = 0;  //stops movement if U/D arrows are not pressed
             this.y += this.speedY;
 
-            //x-axis
+            /*
             if (this.game.keys.includes('ArrowRight')) this.speedX = 2;
             else if (this.game.keys.includes('ArrowLeft')) this.speedX = -2;
             else this.speedX = 0; //stops movement if R/L arrows are not pressed
-            this.x += this.speedX;
+            this.x += this.speedX; */
 
             //projectiles
             this.projectiles.forEach(projectile => {
-                projectile.update();
+                projectile.update(deltaTime);
             });
                     //javascript's filter method
             this.projectiles = this.projectiles.filter(projectile => !projectile.markedforDeletion); //filters out all projectile objects with markedforDeletion set to true
@@ -94,15 +94,13 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             //sprite animation
             if (this.frameX < this.maxFrame){
                 this.frameX++;
-            } else this.frameX = 0;
+            } else {this.frameX = 0;}
         }
         draw(context){
-            if (this.game.debug){
+            if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);  // changed from fillRect to strokeRect for transparency while still having the rect available for collision detectuon
             //context.fillStyle = '#0000ff';//
-                context.strokeRect(this.x, this.y, this.width, this.height);  // changed from fillRect to strokeRect for transparency while still having the rect available for collision detectuon
-            }
             context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.width, this.height, this.x, this.y, this.width, this.height); //using 9 arguments provides the most control over the image's display
-                                        // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
+                            // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
             
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
@@ -128,9 +126,8 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.game = game;
             this.x = this.game.width;  
             this.speedX = Math.random()*-1.5 - 0.5;
-            this.lives = 7;
             this.markedforDeletion = false;
-            TouchList.frameX = 0;
+            this.frameX = 0;
             this.frameY = 0;
             this.maxFrame = 37;
         }
@@ -146,7 +143,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
         draw(context){
             //context.fillStyle = 'red';//
             if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
-            context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.eidth, this.height, this.x, this.y, this,width, this.height);
+            context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.width, this.height, this.x, this.y, this,width, this.height);
                 // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
 
             //display enemies' lives
@@ -158,12 +155,13 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
     class Angler1 extends Enemy{
         constructor(game){
             super(game); //allows for inheritance of constructor instead of overriding it
-                this.width = 228 * 0.2;
-                this.height = 169 * 0.2;
-                this.y = Math.random() * (this.game.height*0.9-this.height);
-                this.score = 3;
+                this.width = 228;
+                this.height = 169;
+                this.y = Math.random() * (this.game.height*0.95-this.height);
                 this.image = document.getElementById('angler1');
                 this.frameY = Math.floor(Math.random()*3);
+                this.score = 3;
+                this.lives = 6;
         }
     }
 
@@ -196,11 +194,11 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.image2 = document.getElementById('layer2');
             this.image3 = document.getElementById('layer3');
             this.image4 = document.getElementById('layer4');
-            this.layer1 = new Layer(this.game, this.image1, 1)
-            this.layer2 = new Layer(this.game, this.image2, 0.3)
-            this.layer3 = new Layer(this.game, this.image3, 0.3)
-            this.layer4 = new Layer(this.game, this.image4, 0.5)
-            this.layers = [this.layer1, this.layer2, this.layer3, this.layer4];
+            this.layer1 = new Layer(this.game, this.image1, 0.2)
+            this.layer2 = new Layer(this.game, this.image2, 0.4)
+            this.layer3 = new Layer(this.game, this.image3, 1)
+            this.layer4 = new Layer(this.game, this.image4, 1.5)
+            this.layers = [this.layer1, this.layer2, this.layer3];
 
         }
         update() {
@@ -300,7 +298,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.timeLimit = 30000;
             this.gameOver = false;
             this.speed = 1;
-            this.debug = true;
+            this.debug = false;
         }
         update(deltaTime){
             if (!this.gameOver) this.gameTime += deltaTime;
