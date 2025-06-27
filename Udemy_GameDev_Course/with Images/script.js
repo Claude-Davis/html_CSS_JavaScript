@@ -16,6 +16,9 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
                       (e.key === 'ArrowLeft')
                     ) && this.game.keys.indexOf(e.key) === -1) this.game.keys.push(e.key); //the key is pushed into the array 'keys' (Game constructor)
                 else if (e.key === ' ') this.game.player.shootTop(); 
+                else if (e.key === 'd'); {
+                    this.game.debug = !this.game.debug;
+                }
                 console.log(this.game.keys);
             });
             window.addEventListener('keyup', e => {
@@ -66,7 +69,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
            this.image = document.getElementById('player');
            this.frameX = 0;  //cycles through spritesheet horizontally
            this.frameY = 0;   //cycles through spritesheet vertically
-           this.maxFrame =37;
+           this.maxFrame = 37;
         }
         update(){
             //y-axis
@@ -91,13 +94,16 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             //sprite animation
             if (this.frameX < this.maxFrame){
                 this.frameX++;
-            } else { this.frameX = 0}
+            } else this.frameX = 0;
         }
         draw(context){
-            context.fillStyle = '#0000ff';
-            context.fillRect(this.x, this.y, this.width, this.height);
+            if (this.game.debug){
+            //context.fillStyle = '#0000ff';//
+                context.strokeRect(this.x, this.y, this.width, this.height);  // changed from fillRect to strokeRect for transparency while still having the rect available for collision detectuon
+            }
             context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.width, this.height, this.x, this.y, this.width, this.height); //using 9 arguments provides the most control over the image's display
                                         // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
+            
             this.projectiles.forEach(projectile => {
                 projectile.draw(context);
             });
@@ -124,28 +130,40 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.speedX = Math.random()*-1.5 - 0.5;
             this.lives = 7;
             this.markedforDeletion = false;
+            TouchList.frameX = 0;
+            this.frameY = 0;
+            this.maxFrame = 37;
         }
         update(){
             this.x += this.speedX;
             if (this.x + this.width < 0) this.markedforDeletion=true; //delete if enemy is out of bounds
+
+            //sprite animation
+            if (this.frameX<this.maxFrame){
+                this.frameX++;
+             } else this.frameX = 0;
         }
         draw(context){
-            context.fillStyle = 'red';
-            context.fillRect(this.x, this.y, this.width, this.height);
+            //context.fillStyle = 'red';//
+            if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.frameX*this.width, this.frameY*this.height, this.eidth, this.height, this.x, this.y, this,width, this.height);
+                // source, source x, source y, source width, source height, destination x, destination y, destination width, destination height
 
             //display enemies' lives
             context.fillStyle = 'red';
             context.font = '20px Helvetica';
-            context.fillText(this.lives, this.x+9, this.y-5);
+            context.fillText(this.lives, this.x+19, this.y-5);
         }
     }
-    class type1Enemy extends Enemy{
+    class Angler1 extends Enemy{
         constructor(game){
             super(game); //allows for inheritance of constructor instead of overriding it
                 this.width = 228 * 0.2;
                 this.height = 169 * 0.2;
                 this.y = Math.random() * (this.game.height*0.9-this.height);
                 this.score = 3;
+                this.image = document.getElementById('angler1');
+                this.frameY = Math.floor(Math.random()*3);
         }
     }
 
@@ -282,6 +300,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             this.timeLimit = 30000;
             this.gameOver = false;
             this.speed = 1;
+            this.debug = true;
         }
         update(deltaTime){
             if (!this.gameOver) this.gameTime += deltaTime;
@@ -335,7 +354,7 @@ window.addEventListener('load', function(){ //LOAD EVENT: executes when the whol
             });
         }
         addEnemy(){
-            this.enemies.push(new type1Enemy(this)); //new object of type1Enemy is made and added to "enemies" array
+            this.enemies.push(new Angler1(this)); //new object of Angler1 is made and added to "enemies" array
         }
         checkCollision(rect1, rect2){
             return (
